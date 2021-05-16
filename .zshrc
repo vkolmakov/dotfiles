@@ -6,10 +6,38 @@ if [[ "$(uname 2> /dev/null)" = "Linux" ]]; then
 fi
 
 if [[ "$(uname 2> /dev/null)" = "Darwin" ]]; then
+    # Brew
+    export BREW_PATH="/usr/local/bin"
+    export PATH="$BREW_PATH:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin"
+
     ## nvm setup
     export NVM_DIR="$HOME/.nvm"
     [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
     [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+    ## Java
+    # export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0_222`
+
+    # TeX
+    export TEX_PATH="/Library/TeX/texbin"
+    export PATH="$PATH:$TEX_PATH"
+
+    # Haskell
+    export STACK_GHC_BIN_PATH="$HOME/.stack/snapshots/x86_64-osx/lts-8.13/8.0.2/bin:$HOME/.stack/programs/x86_64-osx/ghc-8.0.2/bin"
+    export STACK_GLOBAL_PATH="$HOME/.local/bin"
+    export PATH="$PATH:$STACK_GHC_BIN_PATH:$STACK_GLOBAL_PATH"
+
+    ## Python
+    export WORKON_HOME="$HOME/.virtualenvs"
+
+    ## Rust
+    export RUST_PATH="$HOME/.cargo/bin"
+    export RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
+    export PATH="$PATH:$RUST_PATH"
+
+    # Dotnet
+    export DOTNET_PATH="$HOME/.dotnet/tools"
+    export PATH="$PATH:$DOTNET_PATH"
 
     ## Golang
     if [ ! -d "$HOME/go" ]
@@ -19,25 +47,6 @@ if [[ "$(uname 2> /dev/null)" = "Darwin" ]]; then
     export GOPATH="$HOME/go"
     export GOROOT="$(brew --prefix golang)/libexec"
     export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
-
-    ## Java
-    # export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0_222`
-
-    export TEX_PATH="/Library/TeX/texbin"
-    export STACK_GHC_BIN_PATH="$HOME/.stack/snapshots/x86_64-osx/lts-8.13/8.0.2/bin:$HOME/.stack/programs/x86_64-osx/ghc-8.0.2/bin"
-    export STACK_GLOBAL_PATH="$HOME/.local/bin"
-
-    ## Python
-    export WORKON_HOME="$HOME/.virtualenvs"
-
-    ## Rust
-    export RUST_PATH="$HOME/.cargo/bin"
-    export RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
-
-    # Path
-    export BREW_PATH="/usr/local/bin"
-    export PATH="$BREW_PATH:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:$TEX_PATH"
-    export PATH="$YARN_GLOBAL_PATH:$TEX_PATH:$STACK_GHC_BIN_PATH:$STACK_GLOBAL_PATH:$GOPATH:$RUST_PATH:$PATH"
 fi
 
 
@@ -103,7 +112,6 @@ then
     alias la="exa -la"
 elif [[ -x $(which gls) ]]
 then
-    ## brew install gls
     alias ls="gls --color -hX --group-directories-first"
     alias la="gls --color -o -AhX --group-directories-first"
 fi
@@ -111,7 +119,6 @@ fi
 # bat - https://github.com/sharkdp/bat
 if [[ -x $(which bat) ]]
 then
-    ## brew install bat
     alias cat="bat"
 fi
 if [[ -x $(which batcat) ]]
@@ -123,19 +130,16 @@ fi
 
 if [[ -x $(which rg) ]]
 then
-    ## brew install rg
     alias grep="rg"
 fi
 
 if [[ -x $(which trash) ]]
 then
-    ## brew install trash
     alias rm="trash"
 fi
 
 if [[ -x $(which tldr) ]]
 then
-    ## brew install tldr
     alias h="tldr"
 else
     alias h="man"
@@ -163,3 +167,5 @@ function killallmatching () {
 
 # tmux shortcut -- always attach to the same session called `main`
 alias tm="tmux new-session -A -s main"
+
+function gi() { curl -sLw n https://www.toptal.com/developers/gitignore/api/$1 >> .gitignore }
